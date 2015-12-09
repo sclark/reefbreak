@@ -4,6 +4,23 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongo = require('mongodb');
+var mongoose = require( 'mongoose' );
+
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/reefbreak');
+mongoose.model('Poll', new mongoose.Schema({
+  name: {type: String, unique: true},
+  prompt: String,
+  options: [{name: String, votes: Number}],
+  single: Boolean,
+  method: {name: String, code: String}
+}));
+mongoose.model('Method', new mongoose.Schema({
+  name: String,
+  code: String,
+  slogan: String,
+  description: String
+}));
 
 var app = express();
 var routes = require('./routes/index');

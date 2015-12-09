@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1 #{poll.prompt}
+  h3
+    | #{poll.name} poll is using the 
+    a(href='/about/'+method.code) #{method.name}
+    |  to select a winner.
+  form(action='')
+    - each option, index in poll.options
+      p.wide
+        input.poll-option(type=(poll.single ? 'radio' : 'checkbox'), name='option', id='#{option.name}')
+        label.poll-label(for='#{option.name}') #{option.name}
+    input(type='submit', value='send my vote ✈')        

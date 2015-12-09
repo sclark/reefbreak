@@ -2,6 +2,9 @@ html, body {
   margin: 0;
   padding: 0;
 }
+*:focus {
+    outline: none;
+}
 
 body {
   background-color: rgba(102, 153, 204, 0.75);
@@ -14,6 +17,12 @@ h1:first-child {
 h3:last-child {
   margin-bottom: 0;
 }
+p:not(:last-child) {
+  margin: 0 0 20px;
+}
+p:last-child {
+  margin: 0;
+}
 a {
   text-decoration: none;
   color: inherit;
@@ -21,6 +30,21 @@ a {
 }
 a:hover {
   border-bottom: 2px solid #ecf0f1;
+}
+input {
+  display: inline;
+  color: #ecf0f1;
+  font-family: inherit;
+  font-size: inherit;
+  background: transparent;
+  border: solid 5px #0F356B;
+  padding: 5px;
+}
+::-webkit-input-placeholder {
+   color: #ecf0f1;
+}
+::-moz-placeholder {
+   color: #ecf0f1;
 }
 
 #header {
@@ -48,7 +72,31 @@ a:hover {
 #logo {
   padding: 20px;
 }
+#access-code {
+  width: 200px;
+}
+
+.poll-label {
+  display: block;
+  border: 5px solid #0C4BA2;
+  padding: 5px;
+}
+.poll-option:checked + .poll-label {
+  border: 5px solid #0F356B;
+}
+.poll-option {
+  display: none;
+}
 
 .no-dots {
   border-bottom: none;
+}
+.no-ul {
+  border-bottom: none;
+}
+.no-ul:hover {
+  border-bottom: none;
+}
+.wide {
+  width: 100%;
 }
