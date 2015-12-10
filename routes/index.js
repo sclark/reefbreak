@@ -15,7 +15,7 @@ router.get('/p/:name', function(req, res) {
       else {
         Method.findOne({code: poll.method}).exec(
           function(e, method) {
-            //should never error due to database invariants on insert
+            if (e || poll == null) res.render('error', { message: "Method Not Found", status: "It seems that this poll is broken. Try recerating it..." });
             res.render('poll', { poll: poll, method: method });
           }
         );
@@ -24,8 +24,11 @@ router.get('/p/:name', function(req, res) {
   );
 });
 
-router.get('/p/:id/c/:vote', function(req, res, next) {
-  res.render('error', { message: "Unimplemented", status: "This feature is not available yet.", error: {} });
+router.post('/p/:name/cast', function(req, res) {
+  Poll.update({name: req.params.name, 'options.name': req.body.vote}, {$inc: {'options.$.votes': 1}}, function(e, status) {
+    if (e || status.ok === 0) res.render('error', { message: "Vote Not Counted", status: "Please go back to your poll and try to vote again. If this error persists, contact help...", error: {} });
+    res.redirect('/p/'+req.params.name+'/r');
+  });
 });
 
 router.get('/p/:id/r', function(req, res, next) {

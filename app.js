@@ -13,13 +13,14 @@ mongoose.model('Poll', new mongoose.Schema({
   prompt: String,
   options: [{name: String, votes: Number}],
   single: Boolean,
-  method: {name: String, code: String}
+  method: String
 }));
 mongoose.model('Method', new mongoose.Schema({
   name: String,
   code: String,
   slogan: String,
-  description: String
+  description: String,
+  links: [{name: String, link: String}]
 }));
 
 var app = express();
