@@ -36,7 +36,14 @@ router.get('/p/:id/r', function(req, res, next) {
 });
 
 router.get('/about/:method', function(req, res, next) {
-  res.render('error', { message: "Unimplemented", status: "This feature is not available yet.", error: {} });
+  Method.findOne({code: req.params.method}).exec(
+    function(e, method) {
+      if (e || method == null) res.render('error', { message: "Method Not Found", status: "This method does not exist!" });
+      else {
+        res.render('about', {method: method});
+      }
+    }
+  );
 });
 
 module.exports = router;

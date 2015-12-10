@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  h1 #{method.name}
+  h3 #{method.slogan}
+  p #{method.description}
+  ul
+    - each link in method.links
+      li: a(href=link.link) #{link.name}
