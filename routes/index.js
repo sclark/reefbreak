@@ -7,7 +7,11 @@ var Method = mongoose.model('Method');
 router.get('/', function(req, res, next) {
   res.render('index');
 });  
-  
+
+router.get('/new', function(req, res, next) {
+  res.render('error', { message: "Unimplemented", status: "This feature is not available yet.", error: {} });
+});  
+
 router.get('/p/:name', function(req, res) {
   Poll.findOne({name: req.params.name}).exec(
     function(e, poll) {
