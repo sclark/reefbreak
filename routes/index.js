@@ -8,8 +8,16 @@ router.get('/', function(req, res, next) {
   res.render('index');
 });  
 
-router.get('/new', function(req, res, next) {
-  res.render('error', { message: "Unimplemented", status: "This feature is not available yet.", error: {} });
+router.get('/new', function(req, res) {
+  Method.find({}).exec(
+    function (e, methods) {
+      res.render('new', {methods: methods} );
+    }
+  );
+});
+
+router.post('/new', function(req, res) {
+    res.render('error', { message: "Unimplemented", status: "This feature is not available yet.", error: {} });
 });  
 
 router.get('/p/:name', function(req, res) {

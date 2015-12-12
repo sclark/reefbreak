@@ -1,0 +1,56 @@
+extends layout
+
+block content
+  script.
+    function validate() {
+      var prompt = document.getElementById('prompt');
+      var method = document.getElementById('method');
+      var option = document.getElementById('option-0');
+      var valid = true;
+      [prompt, method, option].forEach(function(elem, i, arr) {
+        if (elem.value === '') elem.classList.add('error');
+        else elem.classList.remove('error');
+        valid = valid && elem.value != '';
+      });
+      return valid;
+    }
+    function moreOptions() {
+      var n = parseInt(document.getElementById('option-n').value);
+      var p = document.createElement('p');
+      p.classList.add('wide');
+      var option = document.createElement('input');
+      option.type = 'text';
+      option.name = 'option-'+n;
+      option.id = 'option-'+n;
+      option.placeholder = 'another option';
+      p.appendChild(option);
+      document.getElementById('options').appendChild(p);
+      document.getElementById('option-n').value = n + 1;
+    }
+    window.onkeyup = function() {
+      var n = parseInt(document.getElementById('option-n').value);
+      var more = true;
+      for (var i = 0; i < n; i++) more = more && document.getElementById('option-'+i).value != '';
+      if (more)  moreOptions();
+    }
+
+  form(action='/new', method='post', id='new-form', onsubmit='return validate()')
+    h1 
+      input.bold(type='text', name='prompt', id='prompt' placeholder='What is your poll question?', autocomplete='off')
+      
+    h3 
+      | Your poll will use the 
+      select(form='new-form', name='method', id='method')
+        option(value='', disabled='true', selected='true') select a method
+        - each method in methods
+          option(value='#{method.code}') #{method.name}
+      |  method to select a winner.
+      
+    - var n = 3;
+    div#options
+      - for (var i = 0; i < n; i++)
+        p.wide
+          input(type='text', name='option-'+i, id='option-'+i, placeholder=(i===0 ? 'the first option' : 'another option'), autocomplete='off') 
+        
+    input.hidden(type='number', name='option-n', id='option-n', value=(n), disabled='true') 
+    input(type='submit', value='create my poll already')  

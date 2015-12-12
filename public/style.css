@@ -23,6 +23,9 @@ p:not(:last-child) {
 p:last-child {
   margin: 0;
 }
+div {
+  margin: 0 0 20px;
+}
 a {
   text-decoration: none;
   color: inherit;
@@ -32,6 +35,7 @@ a:hover {
   border-bottom: 2px solid #ecf0f1;
 }
 input {
+  box-sizing: border-box;
   display: inline;
   color: #ecf0f1;
   font-family: inherit;
@@ -39,12 +43,32 @@ input {
   background: transparent;
   border: solid 5px #0F356B;
   padding: 5px;
+  transition: border-color 0.2s ease-in-out;
 }
 ::-webkit-input-placeholder {
    color: #ecf0f1;
 }
 ::-moz-placeholder {
    color: #ecf0f1;
+}
+input[type="text"] {
+  width: 100%;
+}
+select {
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAA5ElEQVRIS+3SoUqEURDF8d8iJoPZssVoMxk02VyjUVCEDb6QSdFlX0CTCCZBsIoPYNEX0OgiMrCIyvc59wobVnbqnDn/uWdux4SrM2F/M0Ca8P+MaBm7VH+Adwzx+DW3pogOcJKG2yzYxyADRP8Me5WQU8Ry36rtyPO4xGYh5BpbeCsFhG4Rt1hJIA9Yx0uTLvumXdxhqQXyjDU8tS2RAWJuFTdY+GHyig3c//bCEkDM93CBubHZCNu4ym5UCgifQxyNDfs4zsyjXwMI/Q5i+/MS878ASn0/dbUvmAGqE0gHpv8GH5bqGhmIk7VMAAAAAElFTkSuQmCC) no-repeat right #07c;
+  padding-right: 24px;
+  border: solid 5px #0F356B;
+  transition: border-color 0.2s ease-in-out;
+}
+input:focus, select:focus {
+  border-color: #1955A9;
 }
 
 #header {
@@ -99,4 +123,13 @@ input {
 }
 .wide {
   width: 100%;
+}
+.bold {
+  font-weight: bold;
+}
+.error {
+  border-color: red;
+}
+.hidden {
+  display: none;
 }
