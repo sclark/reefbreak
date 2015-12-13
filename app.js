@@ -25,6 +25,7 @@ mongoose.model('Method', new mongoose.Schema({
 
 var app = express();
 var routes = require('./routes/index');
+var api = require('./routes/api');
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -37,6 +38,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
+app.use('/api/v1', api);
 
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
