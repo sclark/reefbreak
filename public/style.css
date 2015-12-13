@@ -51,9 +51,6 @@ input {
 ::-moz-placeholder {
    color: #ecf0f1;
 }
-input[type="text"] {
-  width: 100%;
-}
 select {
   color: inherit;
   font-size: inherit;
@@ -124,11 +121,17 @@ input:focus, select:focus {
 .wide {
   width: 100%;
 }
+.skinny {
+  width: 200px;
+}
 .bold {
   font-weight: bold;
 }
 .error {
   border-color: red;
+}
+.error:focus {
+  border-color: #DC3232;
 }
 .hidden {
   display: none;
