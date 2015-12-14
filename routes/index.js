@@ -17,7 +17,18 @@ router.get('/new', function(req, res) {
 });
 
 router.post('/new', function(req, res) {
-    res.render('error', { message: "Unimplemented", status: "This feature is not available yet.", error: {} });
+  var i = 0;
+  var options = [];
+  while (req.body["option-"+i] != undefined && req.body["option-"+i] != '') {
+    options.push({name: req.body["option-"+i], votes: 0});
+    i++;
+  }
+  var single = true;
+  var poll = new Poll({single: single, prompt: req.body.prompt, options: options, name: req.body.name, method: req.body.method});
+  poll.save(function(e, d) {
+    if (e) res.render('error', { message: "Poll Not Created", status: "Your poll was not created. Please try again, maybe another name...", error: {} });
+    else res.redirect('/p/'+req.body.name);
+  });
 });  
 
 router.get('/p/:name', function(req, res) {
