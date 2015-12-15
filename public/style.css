@@ -42,7 +42,6 @@ input {
   font-size: inherit;
   background: transparent;
   border: solid 5px #0F356B;
-  padding: 5px;
   transition: border-color 0.2s ease-in-out;
 }
 ::-webkit-input-placeholder {
@@ -100,7 +99,6 @@ input:focus, select:focus {
 .poll-label {
   display: block;
   border: 5px solid #0C4BA2;
-  padding: 5px;
 }
 .poll-option:checked + .poll-label {
   border: 5px solid #0F356B;
@@ -145,4 +143,7 @@ input:focus, select:focus {
 }
 .pull-left {
   float: left;
+}
+.padded {
+  padding: 5px;
 }

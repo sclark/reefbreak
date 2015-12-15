@@ -10,5 +10,5 @@ block content
     - each option, index in poll.options
       p.wide
         input.poll-option(type=(poll.single ? 'radio' : 'checkbox'), name='vote', value=option.name, id=option.name)
-        label.poll-label(for=option.name) #{option.name}
-    input(type='submit', value='send my vote ✈')        
+        label.padded.poll-label(for=option.name) #{option.name}
+    input.padded(type='submit', value='send my vote ✈')        

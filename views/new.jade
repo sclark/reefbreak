@@ -41,6 +41,7 @@ block content
       option.id = 'option-'+n;
       option.placeholder = 'another option';
       option.autocomplete = 'off';
+      option.classList.add('padded');
       option.classList.add('wide');
       p.appendChild(option);
       document.getElementById('options').appendChild(p);
@@ -58,12 +59,12 @@ block content
 
   form(action='/new', method='post', id='new-form', onsubmit='return validate()')
     h1 
-      input.bold.wide(type='text', name='prompt', id='prompt' placeholder='What is your poll question?', autocomplete='off')
+      input.padded.bold.wide(type='text', name='prompt', id='prompt' placeholder='What is your poll question?', autocomplete='off')
       
     h3 
-      input.skinny(type='text', name='name', id='name', placeholder='your poll name', autocomplete='off')
+      input.padded.skinny(type='text', name='name', id='name', placeholder='your poll name', autocomplete='off')
       |  will use the 
-      select(form='new-form', name='method', id='method')
+      select.padded(form='new-form', name='method', id='method')
         option(value='', disabled='true', selected='true') select a method
         - each method in methods
           option(value='#{method.code}') #{method.name}
@@ -73,7 +74,7 @@ block content
     div#options
       - for (var i = 0; i < n; i++)
         p.wide
-          input.wide(type='text', name='option-'+i, id='option-'+i, placeholder=(i===0 ? 'the first option' : 'another option'), autocomplete='off') 
+          input.padded.wide(type='text', name='option-'+i, id='option-'+i, placeholder=(i===0 ? 'the first option' : 'another option'), autocomplete='off') 
         
     input.hidden(type='number', name='option-n', id='option-n', value=(n), disabled='true') 
-    input(type='submit', value='create my poll already')  
+    input.padded(type='submit', value='create my poll already')  
