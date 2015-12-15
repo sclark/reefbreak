@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1 #{poll.prompt}
+  h3
+    | #{poll.name} poll is using the 
+    a(href='/about/'+method.code) #{method.name}
+    |  to select a winner.
+  - each option, index in poll.options
+    div.poll-label
+      p.padded.bar(style="width:"+(option.votes/poll.votes*100)+"%;") #{option.name} 
+        span.pull-right (#{option.votes + (option.votes == 1 ? " vote" : " votes")})

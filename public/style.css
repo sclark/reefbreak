@@ -136,3 +136,13 @@ input:focus, select:focus {
 .hidden {
   display: none;
 }
+.bar {
+  box-sizing: border-box;
+  background-color: #0C4BA2;
+}
+.pull-right {
+  float: right;
+}
+.pull-left {
+  float: left;
+}
