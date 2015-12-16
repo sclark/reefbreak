@@ -135,8 +135,13 @@ input:focus, select:focus {
   display: none;
 }
 .bar {
+  white-space: nowrap;
   box-sizing: border-box;
   background-color: #0C4BA2;
+}
+.bar:hover:after {
+  color: #729BB7;
+  content: attr(data-votes);
 }
 .pull-right {
   float: right;
