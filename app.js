@@ -14,6 +14,7 @@ mongoose.model('Poll', new mongoose.Schema({
   options: [{name: String, votes: Number}],
   votes: Number,
   single: Boolean,
+  time: Number,
   method: String
 }));
 mongoose.model('Method', new mongoose.Schema({
@@ -22,6 +23,10 @@ mongoose.model('Method', new mongoose.Schema({
   slogan: String,
   description: String,
   links: [{name: String, link: String}]
+}));
+mongoose.model('Time', new mongoose.Schema({
+  name: String,
+  sec: Number
 }));
 
 var app = express();

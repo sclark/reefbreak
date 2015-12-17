@@ -3,6 +3,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var Poll = mongoose.model('Poll');
 var Method = mongoose.model('Method');
+var Time = mongoose.model('Time');
 
 router.get('/', function(req, res, next) {
   res.render('index');
@@ -11,7 +12,11 @@ router.get('/', function(req, res, next) {
 router.get('/new', function(req, res) {
   Method.find({}).exec(
     function (e, methods) {
-      res.render('new', {methods: methods} );
+      Time.find({}).exec(
+        function (e, times) {
+          res.render('new', {methods: methods, times: times});
+        }
+      )
     }
   );
 });
@@ -24,7 +29,7 @@ router.post('/new', function(req, res) {
     i++;
   }
   var single = true;
-  var poll = new Poll({single: single, prompt: req.body.prompt, options: options, votes: 0, name: req.body.name, method: req.body.method});
+  var poll = new Poll({time: req.body.time, single: single, prompt: req.body.prompt, options: options, votes: 0, name: req.body.name, method: req.body.method});
   poll.save(function(e, d) {
     if (e) res.render('error', { message: "Poll Not Created", status: "Your poll was not created. Please try again, maybe another name...", error: {} });
     else res.redirect('/p/'+req.body.name);

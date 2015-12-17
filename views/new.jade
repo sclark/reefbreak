@@ -20,10 +20,11 @@ block content
     function validate() {
       var prompt = document.getElementById('prompt');
       var name = document.getElementById('name');
+      var time = document.getElementById('time');
       var method = document.getElementById('method');
       var option = document.getElementById('option-0');
       var valid = true;
-      [prompt, name, method, option].forEach(function(elem, i, arr) {
+      [prompt, name, time, method, option].forEach(function(elem, i, arr) {
         if (elem.value === '') elem.classList.add('error');
         else elem.classList.remove('error');
         valid = valid && elem.value != '';
@@ -63,7 +64,12 @@ block content
       
     h3 
       input.padded.skinny(type='text', name='name', id='name', placeholder='your poll name', autocomplete='off')
-      |  will use the 
+      |  will last 
+      select.padded(form='new-form', name='time', id='time')
+        option(value='', disabled='true', selected='true') select a duration
+        - each time in times
+          option(value='#{time.sec}') #{time.name}
+      |  and will use the 
       select.padded(form='new-form', name='method', id='method')
         option(value='', disabled='true', selected='true') select a method
         - each method in methods
