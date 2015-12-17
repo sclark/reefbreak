@@ -16,4 +16,16 @@ router.get('/poll-exists/:name', function(req, res) {
   );
 });
 
+router.get('/poll/:name', function(req, res) {
+  res.send({});
+});
+
+router.get('/poll/:name/r', function(req, res) {
+  res.send({});
+});
+
+router.post('/new', function(req, res) {
+  res.send({});
+});
+
 module.exports = router;
