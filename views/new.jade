@@ -68,7 +68,7 @@ block content
       select.padded(form='new-form', name='time', id='time')
         option(value='', disabled='true', selected='true') select a duration
         - each time in times
-          option(value='#{time.sec}') #{time.name}
+          option(value='#{time.time}') #{time.name}
       |  and will use the 
       select.padded(form='new-form', name='method', id='method')
         option(value='', disabled='true', selected='true') select a method

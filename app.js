@@ -26,7 +26,7 @@ mongoose.model('Method', new mongoose.Schema({
 }));
 mongoose.model('Time', new mongoose.Schema({
   name: String,
-  sec: Number
+  time: Number
 }));
 
 var app = express();
