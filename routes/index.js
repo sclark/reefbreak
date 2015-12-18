@@ -29,7 +29,7 @@ router.post('/new', function(req, res) {
     i++;
   }
   var single = true;
-  var poll = new Poll({time: req.body.time, single: single, prompt: req.body.prompt, options: options, votes: 0, name: req.body.name, method: req.body.method});
+  var poll = new Poll({created: new Date().getTime(), time: req.body.time, single: single, prompt: req.body.prompt, options: options, votes: 0, name: req.body.name, method: req.body.method});
   poll.save(function(e, d) {
     if (e) res.render('error', { message: "Poll Not Created", status: "Your poll was not created. Please try again, maybe another name...", error: {} });
     else res.redirect('/p/'+req.body.name);
@@ -40,6 +40,9 @@ router.get('/p/:name', function(req, res) {
   Poll.findOne({name: req.params.name}).exec(
     function(e, poll) {
       if (e || poll == null) res.render('error', { message: "Poll Not Found", status: "It must have gotten lost in the swells..." });
+      else if (new Date().getTime() - poll.created > poll.time && poll.time != -1) {
+        res.redirect('/p/'+req.params.name+'/r');
+      }
       else {
         Method.findOne({code: poll.method}).exec(
           function(e, method) {

@@ -14,6 +14,7 @@ mongoose.model('Poll', new mongoose.Schema({
   options: [{name: String, votes: Number}],
   votes: Number,
   single: Boolean,
+  created: Number,
   time: Number,
   method: String
 }));
