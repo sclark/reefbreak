@@ -13,6 +13,7 @@ mongoose.model('Poll', new mongoose.Schema({
   name: {type: String, unique: true},
   prompt: String,
   options: [{name: String, votes: Number}],
+  voters: [{ip: String, useragent: String}],
   votes: Number,
   single: Boolean,
   created: Number,
