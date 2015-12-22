@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var Poll = mongoose.model('Poll');
 var Method = mongoose.model('Method');
 var Time = mongoose.model('Time');
+var methodFunctions = require('../method-functions');
 
 router.get('/', function(req, res, next) {
   res.render('index');
@@ -28,12 +29,16 @@ router.post('/new', function(req, res) {
     options.push({name: req.body["option-"+i], votes: 0});
     i++;
   }
-  var single = true;
-  var poll = new Poll({created: new Date().getTime(), time: req.body.time, single: single, prompt: req.body.prompt, options: options, votes: 0, name: req.body.name, method: req.body.method});
-  poll.save(function(e, d) {
-    if (e) res.render('error', { message: "Poll Not Created", status: "Your poll was not created. Please try again, maybe another name...", error: {} });
-    else res.redirect('/p/'+req.body.name);
-  });
+  Method.findOne({code: req.body.method}).exec(
+    function(e, method) {
+      if (e || method == null) res.render('error', { message: "Method Not Found", status: "It seems that something is broken. Try recerating the poll..." });
+      var poll = new Poll({created: new Date().getTime(), winner: "", time: req.body.time, single: method.single, prompt: req.body.prompt, options: options, votes: 0, name: req.body.name, method: req.body.method});
+      poll.save(function(e, d) {
+        if (e) res.render('error', { message: "Poll Not Created", status: "Your poll was not created. Please try again, maybe another name...", error: {} });
+        else res.redirect('/p/'+req.body.name);
+      });
+    }
+  );
 });  
 
 router.get('/p/:name', function(req, res) {
@@ -75,6 +80,17 @@ router.get('/p/:name/r', function(req, res) {
   Poll.findOne({name: req.params.name}).exec(
     function(e, poll) {
       if (e || poll == null) res.render('error', { message: "Poll Not Found", status: "It must have gotten lost in the swells..." });
+      else if ((poll.winner === "") && new Date().getTime() - poll.created > poll.time && poll.time != -1) {
+        Method.findOne({code: poll.method}).exec(
+          function(e, method) {
+            if (e || poll == null) res.render('error', { message: "Method Not Found", status: "It seems that this poll is broken. Try recerating it..." });
+            Poll.update({name: req.params.name}, {$set: {winner: methodFunctions[method.code](poll.options).name}}, function (e, status) {
+              if (e || status.ok === 0) res.render('error', { message: "Winner Calculation Failed", status: "Please try refreshing this page to try again..", error: {} });
+              res.redirect('/p/'+req.params.name+'/r');
+            });
+          }
+        );
+      }
       else {
         Method.findOne({code: poll.method}).exec(
           function(e, method) {

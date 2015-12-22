@@ -106,6 +106,12 @@ input:focus, select:focus {
 .poll-option {
   display: none;
 }
+.poll-label.winner {
+  border: 5px solid #228B22;
+}
+.poll-label.winner > .bar {
+  background-color: #228B22;
+}
 
 .no-dots {
   border-bottom: none;

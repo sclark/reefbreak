@@ -3,9 +3,14 @@ extends layout
 block content
   h1 #{poll.prompt}
   h3
-    | #{poll.name} poll is using the 
-    a(href='/about/'+method.code) #{method.name}
-    |  to select a winner.
+    if poll.winner == ""
+      | #{poll.name} poll is using the 
+      a(href='/about/'+method.code) #{method.name}
+      |  to select a winner.
+    else
+      | #{poll.winner} was choosen as the winner of the #{poll.name} poll using 
+      a(href='/about/'+method.code) #{method.name}
+      |.
   - each option, index in poll.options
-    div.poll-label
+    div.poll-label(class=(poll.winner == option.name ? "winner" : ""))
       p.padded.bar(style="width:"+(option.votes/poll.votes*100)+"%;", data-votes="("+option.votes+(option.votes == 1 ? " vote)" : " votes)")) #{option.name} 

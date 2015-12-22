@@ -13,6 +13,7 @@ mongoose.model('Poll', new mongoose.Schema({
   name: {type: String, unique: true},
   prompt: String,
   options: [{name: String, votes: Number}],
+  winner: String,
   voters: [{ip: String, useragent: String}],
   votes: Number,
   single: Boolean,
@@ -23,6 +24,7 @@ mongoose.model('Poll', new mongoose.Schema({
 mongoose.model('Method', new mongoose.Schema({
   name: String,
   code: String,
+  single: Boolean,
   slogan: String,
   description: String,
   links: [{name: String, link: String}]
