@@ -5,6 +5,12 @@ html, body {
 *:focus {
     outline: none;
 }
+::selection {
+  background-color: #00008B;
+}
+::-moz-selection { 
+  background-color: #00008B;
+}
 
 body {
   background-color: rgba(102, 153, 204, 0.75);
@@ -112,6 +118,15 @@ input:focus, select:focus {
 .poll-label.winner > .bar {
   background-color: #228B22;
 }
+.bar {
+  white-space: nowrap;
+  box-sizing: border-box;
+  background-color: #0C4BA2;
+}
+.bar:hover:after {
+  color: #729BB7;
+  content: attr(data-votes);
+}
 
 .no-dots {
   border-bottom: none;
@@ -139,15 +154,6 @@ input:focus, select:focus {
 }
 .hidden {
   display: none;
-}
-.bar {
-  white-space: nowrap;
-  box-sizing: border-box;
-  background-color: #0C4BA2;
-}
-.bar:hover:after {
-  color: #729BB7;
-  content: attr(data-votes);
 }
 .pull-right {
   float: right;
