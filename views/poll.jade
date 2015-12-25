@@ -11,4 +11,6 @@ block content
       p.wide
         input.poll-option(type=(poll.single ? 'radio' : 'checkbox'), name='vote', value=option.name, id=option.name)
         label.padded.poll-label(for=option.name) #{option.name}
+    
+    input.hidden(type='checkbox', name='single', checked=(poll.single), disabled='true')
     input.padded(type='submit', value='send my vote ✈')        
