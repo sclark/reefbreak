@@ -63,18 +63,18 @@ block content
       input.padded.bold.wide(type='text', name='prompt', id='prompt' placeholder='What is your poll question?', autocomplete='off')
       
     h3 
-      input.padded.skinny(type='text', name='name', id='name', placeholder='your poll name', autocomplete='off')
-      |  will last 
-      select.padded(form='new-form', name='time', id='time')
-        option(value='', disabled='true', selected='true') select a duration
-        - each time in times
-          option(value='#{time.time}') #{time.name}
-      |  and will use the 
+      input.padded.skinny(type='text', name='name', id='name', placeholder='your poll name', autocomplete='off')  
+      |  will be a 
       select.padded(form='new-form', name='method', id='method')
         option(value='', disabled='true', selected='true') select a method
         - each method in methods
           option(value='#{method.code}') #{method.name}
-      |  method to select a winner.
+      |  poll and will last 
+      select.padded(form='new-form', name='time', id='time')
+        option(value='', disabled='true', selected='true') select a duration
+        - each time in times
+          option(value='#{time.time}') #{time.name}
+      | .
       
     - var n = 3;
     div#options
