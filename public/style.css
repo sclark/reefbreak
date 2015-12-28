@@ -8,7 +8,7 @@ html, body {
 ::selection {
   background-color: #00008B;
 }
-::-moz-selection { 
+::-moz-selection {
   background-color: #00008B;
 }
 
@@ -65,7 +65,7 @@ select {
   -webkit-appearance: none;
   appearance: none;
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAA5ElEQVRIS+3SoUqEURDF8d8iJoPZssVoMxk02VyjUVCEDb6QSdFlX0CTCCZBsIoPYNEX0OgiMrCIyvc59wobVnbqnDn/uWdux4SrM2F/M0Ca8P+MaBm7VH+Adwzx+DW3pogOcJKG2yzYxyADRP8Me5WQU8Ry36rtyPO4xGYh5BpbeCsFhG4Rt1hJIA9Yx0uTLvumXdxhqQXyjDU8tS2RAWJuFTdY+GHyig3c//bCEkDM93CBubHZCNu4ym5UCgifQxyNDfs4zsyjXwMI/Q5i+/MS878ASn0/dbUvmAGqE0gHpv8GH5bqGhmIk7VMAAAAAElFTkSuQmCC) no-repeat right #07c;
-  padding-right: 24px;
+  padding-right: 24px !important;
   border: solid 5px #0F356B;
   transition: border-color 0.2s ease-in-out;
 }
