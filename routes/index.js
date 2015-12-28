@@ -77,7 +77,18 @@ router.post('/p/:name/cast', function(req, res) {
     );
   }
   else {
-    res.render('error', { message: "Multiple Votes", status: "This type of poll is not yet supported." });
+    Poll.findOne({name: req.params.name, 'voters.ip': ident.ip, 'voters.useragent': ident.useragent}).exec(
+      function (e, poll) {
+        if (poll) res.render('error', { message: "Duplicate Vote", status: "It looks like you already voted on this poll..." });
+        else if (req.useragent.isBot || req.useragent.browser === "unknown") res.render('error', { message: "Hóla Señor Roboto", status: "Tu miras como un robot y por eso tu no puedes votar. Adiós..." });
+        else {
+          for (var i = 0; i < req.body.vote.length; i++) {
+            Poll.update({name: req.params.name, 'options.name': req.body.vote[i]}, {$inc: {'options.$.votes': 1, votes: 1}, $push: {voters: {ip: req.connection.remoteAddress, useragent: req.useragent.source}}}, function(e, status) {});
+          }
+          res.redirect('/p/'+req.params.name+'/r');
+        }
+      }
+    );
   }
 });
 
