@@ -82,10 +82,10 @@ router.post('/p/:name/cast', function(req, res) {
         if (poll) res.render('error', { message: "Duplicate Vote", status: "It looks like you already voted on this poll..." });
         else if (req.useragent.isBot || req.useragent.browser === "unknown") res.render('error', { message: "Hóla Señor Roboto", status: "Tu miras como un robot y por eso tu no puedes votar. Adiós..." });
         else {
-          for (var i = 0; i < req.body.vote.length; i++) {
-            Poll.update({name: req.params.name, 'options.name': req.body.vote[i]}, {$inc: {'options.$.votes': 1, votes: 1}, $push: {voters: {ip: req.connection.remoteAddress, useragent: req.useragent.source}}}, function(e, status) {});
-          }
-          res.redirect('/p/'+req.params.name+'/r');
+          Poll.update({name: req.params.name, 'options.name': {$in: req.body.vote} }, {$inc: {'options.$.votes': 1, votes: 1}}, { multi: true }, function(e, status) {
+            if (e || status.ok === 0) res.render('error', { message: "Vote Not Counted", status: "Please go back to your poll and try to vote again. If this error persists, contact help...", error: {} });
+            res.redirect('/p/'+req.params.name+'/r');
+          });
         }
       }
     );
