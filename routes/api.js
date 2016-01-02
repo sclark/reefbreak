@@ -8,16 +8,13 @@ router.get('/', function(req, res, next) {
   res.redirect('/');
 });
 
-router.get('/poll-exists/:name', function(req, res) {
+router.get('/poll/:name', function(req, res) {
   Poll.findOne({name: req.params.name}).exec(
     function (e, poll) {
-      res.send({pollExists: poll!=null, pollName: req.params.name, status: "success"});
+      if (poll) res.send({poll: poll, status: "success"});
+      else res.send({poll: null, status: "error: poll not found"})
     }
   );
-});
-
-router.get('/poll/:name', function(req, res) {
-  res.send({});
 });
 
 router.get('/poll/:name/r', function(req, res) {

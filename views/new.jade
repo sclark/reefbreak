@@ -8,11 +8,11 @@ block content
         var ajax = new XMLHttpRequest();
         ajax.onreadystatechange = function() {
           if (ajax.readyState === 4 && ajax.status === 200) {
-            if (JSON.parse(ajax.responseText).pollExists) name.classList.add('error');
+            if (JSON.parse(ajax.responseText).poll) name.classList.add('error');
             else name.classList.remove('error');
           }
         }
-        ajax.open("GET", "/api/v1/poll-exists/"+name.value, true);
+        ajax.open("GET", "/api/v1/poll/"+name.value, true);
         ajax.send();
       }
       else name.classList.add('error');
