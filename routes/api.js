@@ -27,7 +27,13 @@ router.get('/poll/:name/r', function(req, res) {
 });
 
 router.post('/poll/:name/cast', function(req, res) {
-  res.send({});
+  if (req.body.single) {    
+    Poll.update({name: req.params.name, 'options.name': req.body.vote}, {$inc: {'options.$.votes': 1, votes: 1}, $push: {voters: {ip: req.connection.remoteAddress, useragent: req.useragent.source}}}, function(e, status) {
+      if (e || status.ok === 0) res.render('error', { message: "Vote Not Counted", status: "Please go back to your poll and try to vote again. If this error persists, contact help...", error: {} });
+      res.redirect('/p/'+req.params.name+'/r');
+    });
+  }
+  else res.send({});
 });
 
 router.post('/new', function(req, res) {
