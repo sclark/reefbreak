@@ -1,6 +1,20 @@
 extends layout
 
 block content
+  script.
+    var vote = [];
+    window.onload = function() {
+      var arr = document.getElementsByClassName('poll-option');
+      for (var i = 0; i < arr.length; i++) {
+        arr[i].onchange = function() {
+          if (this.checked) vote.push(this.value);
+          else vote.splice(vote.indexOf(this.value), 1);
+          document.getElementById('rank').value = JSON.stringify(vote);
+          showRanks();
+        };
+      }
+    }
+
   h1 #{poll.prompt}
   h3
     | #{poll.name} poll is using the 
@@ -12,5 +26,6 @@ block content
         input.poll-option(type=(poll.single ? 'radio' : 'checkbox'), name='vote', value=option.name, id=option.name)
         label.padded.poll-label(for=option.name) #{option.name}
     
+    input.hidden(type='text', name='rank', id='rank', value='[]', disabled='true')
     input.hidden(type='checkbox', name='single', checked=(poll.single), disabled='true')
     input.padded(type='submit', value='send my vote')        
