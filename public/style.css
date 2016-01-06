@@ -72,6 +72,10 @@ select {
 input:focus, select:focus {
   border-color: #1955A9;
 }
+label:after {
+  color: #729BB7;
+  content: attr(data-rank);
+}
 
 #header {
   background: #444;
