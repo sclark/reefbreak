@@ -1,31 +1,32 @@
 extends layout
 
 block content
-  script.
-    var vote = [];
-    function toOrdinal(n) {
-       var s = ["th","st","nd","rd"], v = n%100;
-       return n + (s[(v-20)%10] || s[v] || s[0]);
-    }
-    function showRanks() {
-      var arr = document.getElementsByClassName('poll-label');
-      for (var i = 0; i < arr.length; i++) {
-        if (vote.indexOf(arr[i].innerText) > -1)
-          arr[i].setAttribute('data-rank', ' ('+(toOrdinal(vote.indexOf(arr[i].innerText)+1))+')');
-        else arr[i].setAttribute('data-rank', '');
+  if method.type == "rank"
+    script.
+      var vote = [];
+      function toOrdinal(n) {
+         var s = ["th","st","nd","rd"], v = n%100;
+         return n + (s[(v-20)%10] || s[v] || s[0]);
       }
-    }
-    window.onload = function() {
-      var arr = document.getElementsByClassName('poll-option');
-      for (var i = 0; i < arr.length; i++) {
-        arr[i].onchange = function() {
-          if (this.checked) vote.push(this.value);
-          else vote.splice(vote.indexOf(this.value), 1);
-          document.getElementById('rank').value = JSON.stringify(vote);
-          showRanks();
-        };
+      function showRanks() {
+        var arr = document.getElementsByClassName('poll-label');
+        for (var i = 0; i < arr.length; i++) {
+          if (vote.indexOf(arr[i].innerText) > -1)
+            arr[i].setAttribute('data-rank', ' ('+(toOrdinal(vote.indexOf(arr[i].innerText)+1))+')');
+          else arr[i].setAttribute('data-rank', '');
+        }
       }
-    }
+      window.onload = function() {
+        var arr = document.getElementsByClassName('poll-option');
+        for (var i = 0; i < arr.length; i++) {
+          arr[i].onchange = function() {
+            if (this.checked) vote.push(this.value);
+            else vote.splice(vote.indexOf(this.value), 1);
+            document.getElementById('rank').value = JSON.stringify(vote);
+            showRanks();
+          };
+        }
+      }
 
   h1 #{poll.prompt}
   h3
@@ -35,9 +36,14 @@ block content
   form(action='/p/'+poll.name+'/cast', method='post')
     - each option, index in poll.options
       p.wide
-        input.poll-option(type=(poll.single ? 'radio' : 'checkbox'), name='vote', value=option.name, id=option.name)
+        if method.type == "single"
+          input.poll-option(type='radio', name='vote', value=option.name, id=option.name)
+        else if method.type == "multi"
+          input.poll-option(type='checkbox', name='vote', value=option.name, id=option.name)
+        else if method.type == "rank"
+          input.poll-option(type='checkbox', value=option.name, id=option.name)
         label.padded.poll-label(for=option.name) #{option.name}
     
-    input.hidden(type='text', name='rank', id='rank', value='[]', disabled='true')
-    input.hidden(type='checkbox', name='single', checked=(poll.single), disabled='true')
+    if method.type == "rank"
+      input.hidden(type='text', name='vote', id='rank', value='[]')
     input.padded(type='submit', value='send my vote')        
