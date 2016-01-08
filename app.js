@@ -13,9 +13,8 @@ mongoose.model('Poll', new mongoose.Schema({
   name: {type: String, unique: true},
   prompt: String,
   options: [{name: String, votes: Number}],
+  votes: [{vote: [String], ip: String, useragent: String}],
   winner: String,
-  voters: [{ip: String, useragent: String}],
-  votes: Number,
   single: Boolean,
   created: Number,
   time: Number,
@@ -24,7 +23,7 @@ mongoose.model('Poll', new mongoose.Schema({
 mongoose.model('Method', new mongoose.Schema({
   name: String,
   code: String,
-  single: Boolean,
+  type: String,
   slogan: String,
   description: String,
   links: [{name: String, link: String}]

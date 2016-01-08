@@ -13,4 +13,4 @@ block content
       |.
   - each option, index in poll.options
     div.poll-label(class=(poll.winner == option.name ? "winner" : ""))
-      p.padded.bar(style="width:"+(option.votes/poll.votes*100)+"%;", data-votes="("+option.votes+(option.votes == 1 ? " vote)" : " votes)")) #{option.name} 
+      p.padded.bar(style="width:"+(option.votes/poll.votes.length*100)+"%;", data-votes="("+option.votes+(option.votes == 1 ? " vote)" : " votes)")) #{option.name} 

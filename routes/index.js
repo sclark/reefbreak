@@ -32,7 +32,7 @@ router.post('/new', function(req, res) {
   Method.findOne({code: req.body.method}).exec(
     function(e, method) {
       if (e || method == null) res.render('error', { message: "Method Not Found", status: "It seems that something is broken. Try recerating the poll..." });
-      var poll = new Poll({created: new Date().getTime(), winner: "", time: req.body.time, single: method.single, prompt: req.body.prompt, options: options, votes: 0, name: req.body.name, method: req.body.method});
+      var poll = new Poll({created: new Date().getTime(), winner: "", time: req.body.time, prompt: req.body.prompt, options: options, votes: [], name: req.body.name, method: req.body.method});
       poll.save(function(e, d) {
         if (e) res.render('error', { message: "Poll Not Created", status: "Your poll was not created. Please try again, maybe another name...", error: {} });
         else res.redirect('/p/'+req.body.name);
@@ -62,34 +62,23 @@ router.get('/p/:name', function(req, res) {
 
 router.post('/p/:name/cast', function(req, res) {
   var ident = {ip: req.connection.remoteAddress, useragent: req.useragent.source};
-  if (req.body.single) {
-    Poll.findOne({name: req.params.name, 'voters.ip': ident.ip, 'voters.useragent': ident.useragent}).exec(
-      function (e, poll) {
-        if (poll) res.render('error', { message: "Duplicate Vote", status: "It looks like you already voted on this poll..." });
-        else if (req.useragent.isBot || req.useragent.browser === "unknown") res.render('error', { message: "Hóla Señor Roboto", status: "Tu miras como un robot y por eso tu no puedes votar. Adiós..." });
-        else {
-          Poll.update({name: req.params.name, 'options.name': req.body.vote}, {$inc: {'options.$.votes': 1, votes: 1}, $push: {voters: {ip: req.connection.remoteAddress, useragent: req.useragent.source}}}, function(e, status) {
-            if (e || status.ok === 0) res.render('error', { message: "Vote Not Counted", status: "Please go back to your poll and try to vote again. If this error persists, contact help...", error: {} });
-            res.redirect('/p/'+req.params.name+'/r');
-          });
-        }
-      }
-    );
+  try {
+    var vote = JSON.parse(req.body.vote);
+  } catch (e) {
+    var vote = [req.body.vote];
   }
-  else {
-    Poll.findOne({name: req.params.name, 'voters.ip': ident.ip, 'voters.useragent': ident.useragent}).exec(
-      function (e, poll) {
-        if (poll) res.render('error', { message: "Duplicate Vote", status: "It looks like you already voted on this poll..." });
-        else if (req.useragent.isBot || req.useragent.browser === "unknown") res.render('error', { message: "Hóla Señor Roboto", status: "Tu miras como un robot y por eso tu no puedes votar. Adiós..." });
-        else {
-          Poll.update({name: req.params.name, 'options.name': {$in: req.body.vote} }, {$inc: {'options.$.votes': 1, votes: 1}}, { multi: true }, function(e, status) {
-            if (e || status.ok === 0) res.render('error', { message: "Vote Not Counted", status: "Please go back to your poll and try to vote again. If this error persists, contact help...", error: {} });
-            res.redirect('/p/'+req.params.name+'/r');
-          });
-        }
+  Poll.findOne({name: req.params.name, 'votes.ip': ident.ip, 'votes.useragent': ident.useragent}).exec(
+    function (e, poll) {
+      if (poll && false) res.render('error', { message: "Duplicate Vote", status: "It looks like you already voted on this poll..." });
+      else if (req.useragent.isBot || req.useragent.browser === "unknown") res.render('error', { message: "Hóla Señor Roboto", status: "Tu miras como un robot y por eso tu no puedes votar. Adiós..." });
+      else {
+        Poll.update({name: req.params.name, 'options.name': vote[0]}, {$inc: {'options.$.votes': 1}, $push: {votes: {vote: vote, ip: req.connection.remoteAddress, useragent: req.useragent.source}}}, function(e, status) {
+          if (e || status.ok === 0) res.render('error', { message: "Vote Not Counted", status: "Please go back to your poll and try to vote again. If this error persists, contact help...", error: {} });
+          res.redirect('/p/'+req.params.name+'/r');
+        });
       }
-    );
-  }
+    }
+  );
 });
 
 router.get('/p/:name/r', function(req, res) {
@@ -100,7 +89,7 @@ router.get('/p/:name/r', function(req, res) {
         Method.findOne({code: poll.method}).exec(
           function(e, method) {
             if (e || poll == null) res.render('error', { message: "Method Not Found", status: "It seems that this poll is broken. Try recerating it..." });
-            Poll.update({name: req.params.name}, {$set: {winner: methodFunctions[method.code](poll.options).name}}, function (e, status) {
+            Poll.update({name: req.params.name}, {$set: {winner: methodFunctions[method.code](poll.votes, poll.options).name}}, function (e, status) {
               if (e || status.ok === 0) res.render('error', { message: "Winner Calculation Failed", status: "Please try refreshing this page to try again..", error: {} });
               res.redirect('/p/'+req.params.name+'/r');
             });
