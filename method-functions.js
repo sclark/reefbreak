@@ -1,20 +1,27 @@
 module.exports = {
-  majority: function(votes) {
+  majority: function(votes, options) {
     var winner = {name: "no winner", votes: 0};
-    votes.forEach(function(e,i,arr) {
+    options.forEach(function(e,i,arr) {
       if (e.votes > winner.votes) winner = e;
     });
-    return winner
+    return winner;
   },
-  okay: function(votes) {
+  okay: function(votes, options) {
     var winner = {name: "no winner", votes: 0};
-    votes.forEach(function(e,i,arr) {
+    options.forEach(function(e,i,arr) {
       if (e.votes > winner.votes) winner = e;
     });
-    return winner
+    return winner;
   },
-  av: function avWinner(votes, options) {
-    if (votes.length === 0) return "no winner";
+  av: function(votes, options) {
+    for (var i = 0; i < votes.length; i++) {
+      votes[i] = votes[i].vote;
+    }
+    for (var i = 0; i < options.length; i++) {
+      options[i] = options[i].name;
+    }
+
+    if (votes.length === 0) return {name: "no winner", votes: 0};
     function tally(votes, options) {
       var results = [];
       options.forEach(function(e, i, arr) {
@@ -58,6 +65,6 @@ module.exports = {
       var winner = winnerIndex(results);
       votes = dropCanidate(options[looserIndex(results)], votes);
     } while (winner === -1);
-    return options[winner];
+    return {name: options[winner], votes: results[winner]};
   }
 }
