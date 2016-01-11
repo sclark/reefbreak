@@ -62,7 +62,7 @@ if (app.get('env') === 'development') {
     res.status(err.status || 500);
     res.render('error', {
       message: err.message,
-      status: err.status,
+      status: "Looks like the swells broke something. Try again at low tide...",
       error: err
     });
   });
@@ -72,7 +72,7 @@ else {
     res.status(err.status || 500);
     res.render('error', {
       message: err.message,
-      status: err.status,
+      status: "Looks like the swells broke something. Try again at low tide...",
       error: {}
     });
   });
