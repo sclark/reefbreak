@@ -57,25 +57,13 @@ app.use(function(req, res, next) {
   next(err);
 });
 
-if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      status: "Looks like the swells broke something. Try again at low tide...",
-      error: err
-    });
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    status: "Looks like the swells broke something. Try again at low tide..."
   });
-}
-else {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      status: "Looks like the swells broke something. Try again at low tide...",
-      error: {}
-    });
-  });
-}
+  console.log(err);
+});
 
 module.exports = app;
