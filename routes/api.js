@@ -8,6 +8,15 @@ router.get('/', function(req, res, next) {
   res.redirect('/');
 });
 
+router.get('/poll/exists/:name', function(req, res) {
+  Poll.findOne({name: req.params.name}).exec(
+    function (e, poll) {
+      if (poll) res.send({exists: true, status: "success"});
+      else res.send({exists: false, status: "error: poll not found"})
+    }
+  );
+});
+
 router.get('/poll/:name', function(req, res) {
   Poll.findOne({name: req.params.name}).exec(
     function (e, poll) {
