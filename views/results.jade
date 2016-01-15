@@ -1,6 +1,23 @@
 extends layout
 
 block content
+  script.
+    window.onload = function() {
+      var name = document.getElementById('name');
+      var ajax = new XMLHttpRequest();
+      ajax.onreadystatechange = function() {
+        if (ajax.readyState === 4 && ajax.status === 200) {
+          if (JSON.parse(ajax.responseText).hash != document.getElementById("hash").value) {
+            location.reload();
+          }
+        }
+      }
+      ajax.open("GET", "/api/v1/poll/hash/"+name.value, true);
+      ajax.send();
+    }
+  
+  input#name.hidden(type="text", value=poll.name)
+  input#hash.hidden(type="text", value=poll.votes.length)
   h1 #{poll.prompt}
   h3
     if poll.winner == ""
