@@ -17,11 +17,11 @@ router.get('/poll/exists/:name', function(req, res) {
   );
 });
 
-router.get('/poll/hash/:name', function(req, res) {
+router.get('/poll/votes/:name', function(req, res) {
   Poll.findOne({name: req.params.name}).exec(
     function (e, poll) {
-      if (poll) res.send({hash: poll.votes.length, status: "success"});
-      else res.send({hash: false, status: "error: poll not found"})
+      if (poll) res.send({votes: poll.votes.length, status: "success"});
+      else res.send({votes: false, status: "error: poll not found"})
     }
   );
 });
