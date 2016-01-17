@@ -14,7 +14,9 @@ block content
       ajax.send();
     }
     
-    setInterval(checkReload, 5000);
+    window.onload = function() {
+      if (document.getElementById("winner") != "") setInterval(checkReload, 5000);
+    }
   
   h1 #{poll.prompt}
   h3
@@ -30,5 +32,6 @@ block content
     div.poll-label(class=(poll.winner == option.name ? "winner" : ""))
       p.padded.bar(style="width:"+(option.votes/poll.votes.length*100)+"%;", data-votes="("+option.votes+(option.votes == 1 ? " vote)" : " votes)")) #{option.name} 
       
+  input#winner.hidden(type="text", value=poll.winner)
   input#name.hidden(type="text", value=poll.name)
   input#votes.hidden(type="text", value=poll.votes.length)
