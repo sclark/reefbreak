@@ -4,19 +4,18 @@ block content
   script.
     function checkReload() {
       var name = document.getElementById('name');
+      var votes = document.getElementById('votes');
       var ajax = new XMLHttpRequest();
       ajax.onreadystatechange = function() {
         if (ajax.readyState === 4 && ajax.status === 200) {
-          if (JSON.parse(ajax.responseText).votes != document.getElementById("votes").value) location.reload();
+          if (JSON.parse(ajax.responseText).votes != votes.value) location.reload();
         }
       }
       ajax.open("GET", "/api/v1/poll/votes/"+name.value, true);
       ajax.send();
     }
     
-    window.onload = function() {
-      if (document.getElementById("winner") != "") setInterval(checkReload, 5000);
-    }
+    window.addEventListener('load', function() { if (document.getElementById("winner") != "") setInterval(checkReload, 1000); });
   
   h1 #{poll.prompt}
   h3
