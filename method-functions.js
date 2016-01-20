@@ -7,6 +7,14 @@ module.exports = {
     return winner;
   },
   okay: function(votes, options) {
+    for (var i = 0; i < options.length; i++) {
+      options[i].votes = 0;
+    }
+    for (var i = 0; i < votes.length; i++) {
+      for (var j = 0; j < votes[i].length; j++) {
+        options[votes[i][j]] += 1;
+      }
+    }
     var winner = {name: "no winner", votes: 0};
     options.forEach(function(e,i,arr) {
       if (e.votes > winner.votes) winner = e;
